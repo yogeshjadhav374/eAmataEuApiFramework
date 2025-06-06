@@ -1,0 +1,41 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="VulnerableLibrariesLocal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="isIgnoringEnabled" value="true" />
+      <option name="ignoredModules">
+        <list>
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+          <option value="eAmataAPITestAutomation" />
+        </list>
+      </option>
+      <option name="ignoredPackages">
+        <list>
+          <option value="org.yaml:snakeyaml:1.23" />
+          <option value="com.fasterxml.jackson.core:jackson-databind:2.11.0" />
+          <option value="com.google.guava:guava:28.2-android" />
+          <option value="com.jayway.jsonpath:json-path:2.8.0" />
+          <option value="io.netty:netty-codec-http:4.1.78.Final" />
+          <option value="io.netty:netty-common:4.1.78.Final" />
+          <option value="commons-io:commons-io:2.13.0" />
+        </list>
+      </option>
+      <option name="ignoredReasons">
+        <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
