@@ -1,19 +1,15 @@
 package com.thinkitive.eAmata;
 
-import io.cucumber.java.Before;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.mozilla.javascript.ast.IfStatement;
-import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,22 +20,30 @@ public class ApiRequestBuilder {
     public static RequestSpecification request = given();
     public static Response response;
     private static String pathParam;
-    public static String SuperAdminAccessToken;
+    public static String superAdminToken;
+    public static String hcpAdminToken;
 
+    public static void resetRequest() {
+        request = given();
+        pathParam = null;
+    }
 
     public static void setRequestStructure(String access_token) {
-        if(access_token == null){
-            request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
-                    .header("Accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .log().all();
-        }else {
             request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer\n" + access_token)
                     .log().all();
-        }
+
+    }
+
+    public static void setRequestStructure(String access_token, String TenantId) {
+            request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .header("x-tenant-id",TenantId)
+                    .header("Authorization", "Bearer\n" + access_token)
+                    .log().all();
 
     }
 
@@ -75,10 +79,11 @@ public class ApiRequestBuilder {
         Optional.ofNullable(queryParams).ifPresent(obj -> request.queryParams(obj));
     }
 
+
     public static void setpathParam(String Param){
         Optional.ofNullable(Param).ifPresent(p->{
             pathParam = p;
-        request.pathParams("pathParams",p);
+       // request.pathParams("pathParams",p);
     } );
     }
 
@@ -120,13 +125,16 @@ public class ApiRequestBuilder {
         return jsonObject;
     }
 
-    public static void loginPostRequest(String access_Token, Map<String, Object> map, String endPoint){
+
+    public static void PostAPI(String access_Token,Map<String,Object> payload , String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
-        setRequestBody(map);
-        execute(Method.POST, endPoint);
+        setRequestBody(payload);
+        execute(Method.POST, endpoint);
     }
 
     public static <T> void PostAPI(String access_Token, T Dazz, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setRequestBody(Dazz);
         execute(Method.POST, endpoint);
@@ -134,11 +142,24 @@ public class ApiRequestBuilder {
 
 
     public static void GetAPI(String access_Token, Map<String, Object> queryParams, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setQueryParams(queryParams);
         execute(Method.GET, endpoint);
     }
 
+    public static void PutAPI(String access_Token,String jsonUrl , String endpoint){
+        resetRequest();
+        setRequestStructure(access_Token);
+        setRequestBodyWithFile(jsonUrl);
+        execute(Method.PUT, endpoint);
+    }
 
+    public static void GetByIdAPI(String access_Token, String uuid, String endpoint) {
+        resetRequest();
+        setRequestStructure(access_Token);
+        setpathParam(uuid);
+        execute(Method.GET, endpoint);
+    }
 
 }

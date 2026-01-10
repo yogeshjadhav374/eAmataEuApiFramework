@@ -1,0 +1,16 @@
+{
+    "uuid": "54f780db-0654-4800-8663-391370fbc4e7",
+    "name": "GRAND STRAND REGIONAL MEDICAL CENTER",
+    "subdomain": "https://gsrmc.qa.care.eu.eamata.com",
+    "phone": "+330175458599",
+    "finess": "295025756",
+    "email": "gsrmc@eamata.com",
+    "address": {
+      "line1": "69963 Ressie Mill",
+      "line2": null,
+      "city": "paris",
+      "state": "Île-de-France",
+      "country": "France",
+      "zipcode": "65478"
+    }
+}

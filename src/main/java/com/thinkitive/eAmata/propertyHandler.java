@@ -13,7 +13,7 @@ public class propertyHandler {
     public static String getProperty(String key) {
 
         try {
-            input = new FileInputStream(System.getProperty("user.dir") + "/src/test/resources/config.properties");
+            input = new FileInputStream("C:/Users/LNV-24/Desktop/eAmataEuApiFramework/src/test/resources/config.properties");
             prop.load(input);
             input.close();
         } catch (IOException e) {
@@ -21,20 +21,6 @@ public class propertyHandler {
         }
 
         return prop.getProperty(key);
-    }
-
-    public static String getEndpoint(String key) {
-
-        try {
-            input1 = new FileInputStream(System.getProperty("user.dir") + "/src/test/resources/endpoint.properties");
-            prop1.load(input);
-            input1.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
-        return getEndpoint(key);
     }
 }
 
