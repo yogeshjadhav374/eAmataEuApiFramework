@@ -13,7 +13,7 @@ public class propertyHandler {
     public static String getProperty(String key) {
 
         try {
-            input = new FileInputStream("C:/Users/LNV-24/Desktop/eAmataEuApiFramework/src/test/resources/config.properties");
+            input = new FileInputStream("src/test/resources/config.properties");
             prop.load(input);
             input.close();
         } catch (IOException e) {
