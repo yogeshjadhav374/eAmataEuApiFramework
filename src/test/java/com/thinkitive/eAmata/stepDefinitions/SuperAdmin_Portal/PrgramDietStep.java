@@ -107,7 +107,7 @@ public class PrgramDietStep extends ApiRequestBuilder {
     public void verifyProgramDietUpdated(int expectedStatusCode) {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
-        String expectedMessage = "Program diet updated successfully.";
+        String expectedMessage = "Program Diet Updated Successfully.";
         String actualMessage = response.jsonPath().getString("message");
         Assert.assertEquals(expectedMessage, actualMessage);
     }
@@ -134,7 +134,7 @@ public class PrgramDietStep extends ApiRequestBuilder {
     public void verifyProgramDietDeleted(int expectedStatusCode) {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
-        String expectedMessage = "Program diet deleted successfully.";
+        String expectedMessage = "Program Diet deleted successfully.";
         String actualMessage = response.jsonPath().getString("message");
         Assert.assertEquals(expectedMessage, actualMessage);
     }
