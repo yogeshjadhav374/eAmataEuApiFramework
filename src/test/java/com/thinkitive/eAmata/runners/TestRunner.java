@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "C:/Users/LNV-24/Desktop/eAmataEuApiFramework/src/test/resources/features",
         glue = "com.thinkitive.eAmata.stepDefinitions",
-        tags = "@ProgramDiet"
+        tags = "@CreateCarePlan"
 )
 
 public class TestRunner {
