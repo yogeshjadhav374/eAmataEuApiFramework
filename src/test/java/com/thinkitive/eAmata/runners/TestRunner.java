@@ -6,7 +6,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "C:/Users/LNV-24/Desktop/eAmataEuApiFramework/src/test/resources/features",
+@CucumberOptions(features = "src/test/resources/features",
         glue = "com.thinkitive.eAmata.stepDefinitions",
         tags = "@ProgramDiet"
 )
