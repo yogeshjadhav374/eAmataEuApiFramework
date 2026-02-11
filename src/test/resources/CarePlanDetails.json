@@ -1,0 +1,31 @@
+{
+  "uuid": "2db130a9-9e21-4d2b-bf82-67137af0ea68",
+  "carePlanReferenceId": null,
+  "title": "Care Plan Fibromyalgia",
+  "duration": 10,
+  "durationUnit": "MONTH",
+  "overview": null,
+  "gender": null,
+  "ageCriteria": null,
+  "age": null,
+  "deviceName": null,
+  "deviceModels": null,
+  "routineCheckup": null,
+  "programGoals": null,
+  "vitalReferences": null,
+  "tenantId": "public",
+  "external": false,
+  "protocolType": null,
+  "active": true,
+  "archive": false,
+  "trackedVitals": [
+    "BMI",
+    "Heart Rate",
+    "Blood Pressure"
+  ],
+  "modified": "2026-02-11T13:28:39.300747Z",
+  "diagnosisCodes": null,
+  "protocol": null,
+  "dietUuids": null,
+  "programDiet": null
+}

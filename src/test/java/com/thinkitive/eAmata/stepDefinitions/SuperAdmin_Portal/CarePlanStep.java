@@ -14,6 +14,7 @@ import entities.payloads.CarePlanPayload.ProgramGoalTask;
 import entities.payloads.CarePlanPayload.Target;
 import entities.payloads.CarePlanPayload.VitalRange;
 import entities.payloads.CarePlanPayload.VitalReference;
+import entities.response.CarePlanResponse;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -21,6 +22,7 @@ import io.cucumber.java.en.Then;
 public class CarePlanStep extends ApiRequestBuilder {
 
     private static String carePlanId;
+    private static CarePlanResponse.CarePlan firstCarePlan;
 
     @Given("I set up the request structure to add the care plan")
     public void setupRequestStructureToAddCarePlan(Map<String, String> data) {
@@ -95,7 +97,57 @@ public class CarePlanStep extends ApiRequestBuilder {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
         String expectedMessage = "Care plan created successfully.";
+        String actualMessage = response.jsonPath().get("message");
+        Assert.assertEquals(expectedMessage, actualMessage);
+    }
 
-        Assert.assertNotNull(response.jsonPath().get("message")); // Assuming response returns uuid
+    @Given("I set up the request structure to update the care plan")
+    public void setupRequestStructureToUpdateCarePlan(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        String jsonURL = System.getProperty("user.dir")+"/src/test/resources/CarePlanDetails.json";
+
+        ApiRequestBuilder.PutAPI(superAdminToken, jsonURL, endpoint);
+    }
+
+    @Then("I verify that the care plan is updated successfully with {int} status code")
+    public void verifyCarePlanUpdated(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+        String expectedMessage = "Care plan updated successfully.";
+        String actualMessage = response.jsonPath().get("message");
+        Assert.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Given("I set up the request structure to get the care plan")
+    public void setupRequestStructureToGetCarePlan(Map<String, String> data) {
+        // Create a mutable map to handle query parameters
+        Map<String, Object> queryParams = new java.util.HashMap<>();
+
+        // Iterate over the data map
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            if (!entry.getKey().equals("endpoint")) {
+                // Handle empty strings if necessary, but query params usually accept empty strings
+                queryParams.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        String endpoint = data.get("endpoint");
+
+        ApiRequestBuilder.GetAPI(superAdminToken, queryParams, endpoint);
+    }
+
+    @Then("I verify that the status code is {int}")
+    public void verifyStatusCode(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+
+        // Deserialize the response to get the first care plan object
+        CarePlanResponse carePlanResponse = response.as(CarePlanResponse.class);
+        if (carePlanResponse.data != null && carePlanResponse.data.content != null && !carePlanResponse.data.content.isEmpty()) {
+            firstCarePlan = carePlanResponse.data.content.get(0);
+            carePlanId = firstCarePlan.uuid;
+            System.out.println("Captured Care Plan UUID: " + carePlanId);
+            System.out.println("Captured Care Plan Title: " + firstCarePlan.title);
+        }
     }
 }

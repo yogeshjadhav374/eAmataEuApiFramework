@@ -42,7 +42,7 @@ public class ApiRequestBuilder {
         request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
-                .header("x-tenant-id",TenantId)
+                .header("x-tenant-id", TenantId)
                 .header("Authorization", "Bearer\n" + access_token)
                 .log().all();
 
@@ -51,24 +51,24 @@ public class ApiRequestBuilder {
     public static void execute(Method method, String endPoint) {
         switch (method) {
             case GET:
-                response = Objects.isNull(pathParam) ?
-                        request.get(endPoint) : request.get(endPoint + "/" + pathParam);
+                response = Objects.isNull(pathParam)
+                        ? request.get(endPoint) : request.get(endPoint + "/" + pathParam);
                 break;
             case POST:
-                response = Objects.isNull(pathParam) ?
-                        request.post(endPoint) : request.post(endPoint + "/" + pathParam);
+                response = Objects.isNull(pathParam)
+                        ? request.post(endPoint) : request.post(endPoint + "/" + pathParam);
                 break;
             case PUT:
-                response = Objects.isNull(pathParam) ?
-                        request.put(endPoint) : request.put(endPoint + "/" + pathParam);
+                response = Objects.isNull(pathParam)
+                        ? request.put(endPoint) : request.put(endPoint + "/" + pathParam);
                 break;
             case DELETE:
-                response = Objects.isNull(pathParam) ?
-                        request.delete(endPoint) : request.delete(endPoint + "/" + pathParam);
+                response = Objects.isNull(pathParam)
+                        ? request.delete(endPoint) : request.delete(endPoint + "/" + pathParam);
                 break;
             case PATCH:
-                response = Objects.isNull(pathParam) ?
-                        request.patch(endPoint) : request.patch(endPoint + "/" + pathParam);
+                response = Objects.isNull(pathParam)
+                        ? request.patch(endPoint) : request.patch(endPoint + "/" + pathParam);
                 break;
         }
 
@@ -78,12 +78,11 @@ public class ApiRequestBuilder {
         Optional.ofNullable(queryParams).ifPresent(obj -> request.queryParams(obj));
     }
 
-
-    public static void setpathParam(String Param){
-        Optional.ofNullable(Param).ifPresent(p->{
+    public static void setpathParam(String Param) {
+        Optional.ofNullable(Param).ifPresent(p -> {
             pathParam = p;
             // request.pathParams("pathParams",p);
-    } );
+        });
     }
 
     public static void setRequestBody(String body) {
@@ -162,6 +161,13 @@ public class ApiRequestBuilder {
         setRequestStructure(access_Token);
         setRequestBody(payload);
         setpathParam(uuid);
+        execute(Method.PUT, endpoint);
+    }
+
+    public static <T> void PutAPI(String access_Token, T payload, String endpoint) {
+        resetRequest();
+        setRequestStructure(access_Token);
+        setRequestBody(payload);
         execute(Method.PUT, endpoint);
     }
 
