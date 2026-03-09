@@ -129,7 +129,7 @@
             <version>2.29.0</version>
         </dependency>
     </dependencies>
-    <!-- <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,7 +137,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <includes>
-                        <include>com.thinkitive.eAmata.runners.TestRunner</include>
+                        <include>**/AdminPortalTestRunner.java</include>
                     </includes>
                     <systemPropertyVariables>
                         <cucumber.plugin>io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm</cucumber.plugin>
@@ -145,6 +145,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build> -->
+    </build>
 
 </project>

@@ -33,7 +33,7 @@ public class ApiRequestBuilder {
         request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer\n" + access_token)
+                .header("Authorization", "Bearer " + access_token)
                 .log().all();
 
     }
@@ -43,7 +43,7 @@ public class ApiRequestBuilder {
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
                 .header("x-tenant-id", TenantId)
-                .header("Authorization", "Bearer\n" + access_token)
+                .header("Authorization", "Bearer " + access_token)
                 .log().all();
 
     }
@@ -177,11 +177,16 @@ public class ApiRequestBuilder {
         // Construct path: endpoint/uuid/status/statusValue
         String fullPath = endpoint + "/" + uuid + "/status/" + status;
         response = request.put(fullPath);
-        // Note: execute() method handles simple path params, but this is composite. 
-        // Direct execution here for simplicity or adapt execute method.
-        // For consistency with framework pattern, let's try to stick to patterns if possible, 
-        // but this specific path structure is unique.
-        // Let's rely on the simple request.put() for this specific case as it doesn't fit the swich(Method) perfectly with single path param
+    }
+
+    /**
+     * PUT request with custom path construction: endpoint/uuid/suffixPath
+     */
+    public static void PutCustomPathAPI(String access_Token, String uuid, String suffixPath, String endpoint) {
+        resetRequest();
+        setRequestStructure(access_Token);
+        String fullPath = endpoint + "/" + uuid + "/" + suffixPath;
+        response = request.put(fullPath);
     }
 
     public static void DeleteByIdAPI(String access_Token, String uuid, String endpoint) {
