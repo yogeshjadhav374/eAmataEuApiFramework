@@ -1,4 +1,4 @@
-@CarePlanAdmin @AdminPortal
+@CarePlanManagement @SuperAdminPortal
 Feature: Care Plan Management API
 
   @Smoke @Regression

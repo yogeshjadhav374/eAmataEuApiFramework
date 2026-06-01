@@ -1,4 +1,4 @@
-@ProviderManagement @AdminPortal
+@ProviderManagement @SuperAdminPortal
 Feature: Provider/Nurse Management API
 
   @Smoke @Regression
@@ -88,3 +88,37 @@ Feature: Provider/Nurse Management API
       | endpoint | provider                             |
       | uuid     | 00000000-0000-0000-0000-000000000000 |
     Then I verify that the provider is not found with 400 status code
+
+  @Regression
+  @GetProviderProfile
+  Scenario: Verify that the authenticated provider profile endpoint responds
+    Given I set up the request structure to get the authenticated provider profile
+      | endpoint | provider/profile |
+    Then I verify that the provider profile response is returned
+
+  @Regression
+  @GetProviderListArchivedFilter
+  Scenario: Verify that providers can be filtered by archive status
+    Given I set up the request structure to get the provider list
+      | endpoint      | provider |
+      | page          | 0        |
+      | size          | 10       |
+      | sortBy        | id       |
+      | sortDirection | desc     |
+      | archive       | false    |
+    Then I verify that the provider list is displayed successfully with 200 status code
+
+  @Regression @KnownIssue
+  @UpdateProviderOnboardingStatus
+  Scenario: Verify that user can update the provider onboarding status
+    Given I set up the request structure to get the provider list
+      | endpoint      | provider |
+      | page          | 0        |
+      | size          | 10       |
+      | sortBy        | id       |
+      | sortDirection | desc     |
+    Then I verify that the provider list is displayed successfully with 200 status code
+    Given I set up the request structure to update provider onboarding status
+      | endpoint | provider  |
+      | status   | COMPLETED |
+    Then I verify that the provider onboarding status is updated with 200 status code

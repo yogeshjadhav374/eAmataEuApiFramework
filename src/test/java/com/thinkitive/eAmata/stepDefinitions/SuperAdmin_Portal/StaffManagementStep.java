@@ -1,4 +1,4 @@
-package com.thinkitive.eAmata.stepDefinitions.Admin_Portal;
+package com.thinkitive.eAmata.stepDefinitions.SuperAdmin_Portal;
 
 import com.thinkitive.eAmata.ApiRequestBuilder;
 import entities.payloads.StaffPayloadGenerator;

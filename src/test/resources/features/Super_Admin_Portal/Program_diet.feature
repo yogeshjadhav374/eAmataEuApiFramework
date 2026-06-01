@@ -1,4 +1,4 @@
-@ProgramDiet
+@ProgramDiet @SuperAdminPortal
 Feature: Verify Program Diet API
 
   @Regression

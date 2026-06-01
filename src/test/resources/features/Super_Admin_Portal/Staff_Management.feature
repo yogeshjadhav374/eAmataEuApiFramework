@@ -1,4 +1,4 @@
-@StaffManagement @AdminPortal
+@StaffManagement @SuperAdminPortal
 Feature: Staff Management API
 
   @Smoke @Regression

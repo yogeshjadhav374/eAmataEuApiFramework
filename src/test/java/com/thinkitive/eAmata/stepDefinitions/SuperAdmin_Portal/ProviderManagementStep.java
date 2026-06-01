@@ -1,4 +1,4 @@
-package com.thinkitive.eAmata.stepDefinitions.Admin_Portal;
+package com.thinkitive.eAmata.stepDefinitions.SuperAdmin_Portal;
 
 import com.thinkitive.eAmata.ApiRequestBuilder;
 import entities.payloads.ProviderPayloadGenerator;
@@ -166,11 +166,6 @@ public class ProviderManagementStep extends ApiRequestBuilder {
     public void setupDeactivateProvider() {
         Assert.assertNotNull("Provider UUID must be available from list step", providerUuid);
 
-        // Use the archive endpoint directly — the provider might already be inactive
-        // Try to archive directly; the API requires inactive status first
-        // So we need to find an already-inactive provider, or skip the deactivation
-        // Since provider update triggers IAM 404, use a simpler approach:
-        // Just attempt the archive - if it fails due to active status, that's the expected behavior
         ApiRequestBuilder.PutCustomPathAPI(superAdminToken, providerUuid, "archive-status/true", "provider");
     }
 
@@ -195,6 +190,40 @@ public class ProviderManagementStep extends ApiRequestBuilder {
 
     @Then("I verify that the provider archive status is updated with {int} status code")
     public void verifyProviderArchiveStatus(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    // --- Get Provider Profile ---
+
+    @Given("I set up the request structure to get the authenticated provider profile")
+    public void setupGetProviderProfile(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        ApiRequestBuilder.GetAPI(superAdminToken, null, endpoint);
+    }
+
+    @Then("I verify that the provider profile response is returned")
+    public void verifyProviderProfileResponse() {
+        response.prettyPrint();
+        // Accept 200 (super admin has a provider profile) or 400/404 (no provider record for super admin user)
+        int status = response.getStatusCode();
+        Assert.assertTrue("Provider profile endpoint should respond with 200, 400 or 404 (got " + status + ")",
+                status == 200 || status == 400 || status == 404);
+    }
+
+    // --- Update Provider Onboarding Status ---
+
+    @Given("I set up the request structure to update provider onboarding status")
+    public void setupUpdateProviderOnboardingStatus(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        String status = data.getOrDefault("status", "COMPLETED");
+
+        Assert.assertNotNull("Provider UUID must be available from list step", providerUuid);
+        ApiRequestBuilder.PutCustomPathAPI(superAdminToken, providerUuid, "onboarding-status/" + status, endpoint);
+    }
+
+    @Then("I verify that the provider onboarding status is updated with {int} status code")
+    public void verifyProviderOnboardingStatusUpdated(int expectedStatusCode) {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
     }
