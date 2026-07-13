@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features",
         glue = "com.thinkitive.eAmata.stepDefinitions",
-        tags = "@HCPGetAuditLogs"
+        tags = "@HCPGetUserList"
 //        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
 //                "html:target/cucumber-reports.html",
 //                "junit:target/cucumber-reports/Cucumber.xml"}
