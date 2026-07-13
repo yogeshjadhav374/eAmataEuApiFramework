@@ -9,7 +9,7 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(features = "src/test/resources/features",
         glue = "com.thinkitive.eAmata.stepDefinitions",
         tags = "@HCPGetUserList",
-        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",   // updating the allure report and generated successfully using github action
+        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "html:target/cucumber-reports.html",
                 "junit:target/cucumber-reports/Cucumber.xml"}
 )
