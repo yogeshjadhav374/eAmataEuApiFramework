@@ -1,4 +1,4 @@
-@ProfileManagement @AdminPortal
+@ProfileManagement @SuperAdminPortal
 Feature: Profile Management API
 
   @Smoke @Regression

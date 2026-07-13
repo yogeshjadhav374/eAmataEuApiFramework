@@ -1,4 +1,4 @@
-@VerifyHCPGroup
+@VerifyHCPGroup @SuperAdminPortal
 Feature: Verify HCP Group Feature
 
   @Regression

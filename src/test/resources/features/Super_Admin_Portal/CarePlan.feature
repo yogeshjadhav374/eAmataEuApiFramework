@@ -1,4 +1,4 @@
-@CarePlan
+@CarePlan @SuperAdminPortal
 Feature: Verify Care Plan API
 
   @Regression

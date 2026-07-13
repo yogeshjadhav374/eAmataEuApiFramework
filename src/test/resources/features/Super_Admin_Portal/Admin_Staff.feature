@@ -1,3 +1,4 @@
+@SuperAdminPortal
 @SuperAdminStaff
 Feature: Verify Super Admin Staff
 

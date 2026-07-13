@@ -1,4 +1,4 @@
-package com.thinkitive.eAmata.stepDefinitions.Admin_Portal;
+package com.thinkitive.eAmata.stepDefinitions.SuperAdmin_Portal;
 
 import com.thinkitive.eAmata.ApiRequestBuilder;
 import com.thinkitive.eAmata.propertyHandler;
@@ -193,5 +193,108 @@ public class AuthenticationStep extends ApiRequestBuilder {
     public void verifyChangePasswordFailure(int expectedStatusCode) {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    // --- Additional negative login scenarios ---
+
+    @Given("I set up the request structure to login with blank password")
+    public void loginWithBlankPassword(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+
+        Map<String, String> payload = AuthPayloadGenerator.generateLoginPayload(
+                propertyHandler.getProperty("SuperAdminEmail"), "");
+
+        resetRequest();
+        request.baseUri(propertyHandler.getProperty("baseUri"))
+                .basePath(propertyHandler.getProperty("basePath"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(payload).log().all();
+        response = request.post(endpoint);
+    }
+
+    // --- Logout negative path ---
+
+    @And("I set up the request structure to logout with an invalid refresh token")
+    public void setupLogoutInvalidToken(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+
+        Map<String, String> payload = AuthPayloadGenerator.generateLogoutPayload("invalid.refresh.token.value");
+
+        resetRequest();
+        request.baseUri(propertyHandler.getProperty("baseUri"))
+                .basePath(propertyHandler.getProperty("basePath"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + accessToken)
+                .body(payload).log().all();
+        response = request.post(endpoint);
+    }
+
+    @Then("I verify that logout fails with {int} status code")
+    public void verifyLogoutFailure(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    // --- Refresh-token negative path ---
+
+    @Given("I set up the request structure to refresh with an invalid refresh token")
+    public void setupRefreshTokenInvalid(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+
+        Map<String, String> payload = AuthPayloadGenerator.generateLogoutPayload("invalid.refresh.token.value");
+
+        resetRequest();
+        request.baseUri(propertyHandler.getProperty("baseUri"))
+                .basePath(propertyHandler.getProperty("basePath"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .body(payload).log().all();
+        response = request.post(endpoint);
+    }
+
+    @Then("I verify that token refresh fails with {int} status code")
+    public void verifyTokenRefreshFailure(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    // --- Resend OTP ---
+
+    @Given("I set up the request structure to resend OTP for the configured email")
+    public void setupResendOtp(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        String linkType = data.getOrDefault("linkType", "RESET_PASSWORD");
+        String email = propertyHandler.getProperty("SuperAdminEmail");
+
+        resetRequest();
+        request.baseUri(propertyHandler.getProperty("baseUri"))
+                .basePath(propertyHandler.getProperty("basePath"))
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .log().all();
+        response = request.post(endpoint + "/" + linkType + "/" + email);
+    }
+
+    @Then("I verify that the resend OTP response is {int} status code")
+    public void verifyResendOtpResponse(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    // --- Get Authenticated User Profile ---
+
+    @Given("I set up the request structure to fetch the authenticated user profile")
+    public void setupGetUserProfile(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        ApiRequestBuilder.GetAPI(superAdminToken, null, endpoint);
+    }
+
+    @Then("I verify that the user profile is returned with {int} status code")
+    public void verifyUserProfileResponse(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+        Assert.assertNotNull("Profile data should not be null", response.jsonPath().get("data"));
     }
 }

@@ -1,4 +1,4 @@
-package com.thinkitive.eAmata.stepDefinitions.Admin_Portal;
+package com.thinkitive.eAmata.stepDefinitions.SuperAdmin_Portal;
 
 import com.thinkitive.eAmata.ApiRequestBuilder;
 import entities.payloads.CarePlanPayload;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Step definitions for Care Plan Management API endpoints (Admin Portal).
+ * Step definitions for Care Plan Management API endpoints.
  */
 public class CarePlanManagementStep extends ApiRequestBuilder {
 

@@ -1,4 +1,4 @@
-@Authentication @AdminPortal
+@Authentication @SuperAdminPortal
 Feature: Authentication API
 
   @Smoke @Regression
@@ -53,3 +53,41 @@ Feature: Authentication API
     Given I set up the request structure to change password with invalid old password
       | endpoint | change-password |
     Then I verify that change password fails with 400 status code
+
+  @Regression
+  @LoginWithBlankPassword
+  Scenario: Verify that login fails with blank password
+    Given I set up the request structure to login with blank password
+      | endpoint | login |
+    Then I verify that the login fails with 400 status code
+
+  @Regression
+  @LogoutWithInvalidRefreshToken
+  Scenario: Verify that logout fails with an invalid refresh token
+    Given I set up the request structure to login with valid credentials
+      | endpoint | login |
+    And I set up the request structure to logout with an invalid refresh token
+      | endpoint | logout |
+    Then I verify that logout fails with 400 status code
+
+  @Regression
+  @RefreshTokenWithInvalidToken
+  Scenario: Verify that token refresh fails with an invalid refresh token
+    Given I set up the request structure to refresh with an invalid refresh token
+      | endpoint | refresh-token |
+    Then I verify that token refresh fails with 400 status code
+
+  @Regression
+  @ResendOtpValidEmail
+  Scenario: Verify that OTP can be resent for an existing user email
+    Given I set up the request structure to resend OTP for the configured email
+      | endpoint | resend-otp |
+      | linkType | RESET_PASSWORD |
+    Then I verify that the resend OTP response is 200 status code
+
+  @Smoke @Regression
+  @GetUserProfile
+  Scenario: Verify that an authenticated user can fetch their profile
+    Given I set up the request structure to fetch the authenticated user profile
+      | endpoint | profile |
+    Then I verify that the user profile is returned with 200 status code
