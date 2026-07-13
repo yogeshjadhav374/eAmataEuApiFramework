@@ -80,6 +80,43 @@ public class PatientManagementStep extends ApiRequestBuilder {
         }
     }
 
+    // --- Search Patients ---
+
+    @Given("I set up the HCP request structure to search patients")
+    public void setupHCPSearchPatients(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("page", data.getOrDefault("page", "0"));
+        queryParams.put("size", data.getOrDefault("size", "10"));
+        queryParams.put("sortBy", data.getOrDefault("sortBy", "id"));
+        queryParams.put("sortDirection", data.getOrDefault("sortDirection", "desc"));
+        if (data.containsKey("searchString")) {
+            queryParams.put("searchString", data.get("searchString"));
+        }
+        resetRequest();
+        setRequestStructure(hcpAdminToken, propertyHandler.getProperty("TenantId"));
+        setQueryParams(queryParams);
+        execute(io.restassured.http.Method.GET, endpoint);
+    }
+
+    // --- Get Patient By Invalid ID ---
+
+    @Given("I set up the HCP request structure to get patient by invalid ID")
+    public void setupHCPGetPatientByInvalidId(Map<String, String> data) {
+        String endpoint = data.get("endpoint");
+        String uuid = data.get("uuid");
+        resetRequest();
+        setRequestStructure(hcpAdminToken, propertyHandler.getProperty("TenantId"));
+        setpathParam(uuid);
+        execute(io.restassured.http.Method.GET, endpoint);
+    }
+
+    @Then("I verify that the patient is not found with {int} status code")
+    public void verifyPatientNotFound(int expectedStatusCode) {
+        response.prettyPrint();
+        Assert.assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
     // --- Get Patient By ID ---
 
     @Given("I set up the HCP request structure to get patient by ID")

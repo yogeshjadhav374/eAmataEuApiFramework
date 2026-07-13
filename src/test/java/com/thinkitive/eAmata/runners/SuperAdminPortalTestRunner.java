@@ -11,11 +11,8 @@ import io.cucumber.junit.CucumberOptions;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "C:/Users/TTPL-LNVE15-0154/Desktop/eAmata-portal/tests/eAmataEuApiFramework/src/test/resources/features/Super_Admin_Portal",
-        glue = {"C:/Users/TTPL-LNVE15-0154/Desktop/eAmata-portal/tests/eAmataEuApiFramework/src/test/java/com/thinkitive/eAmata/stepDefinitions"},
-//        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
-//                "html:target/cucumber-reports/super-admin-portal.html",
-//                "junit:target/cucumber-reports/super-admin-portal.xml"},
+        features = "src/test/resources/features/Super_Admin_Portal",
+        glue = {"com.thinkitive.eAmata.stepDefinitions"},
         tags = "@getTheUsersList"
 )
 public class SuperAdminPortalTestRunner {
