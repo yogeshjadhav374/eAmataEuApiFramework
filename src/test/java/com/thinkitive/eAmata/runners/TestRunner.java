@@ -8,10 +8,10 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features",
         glue = "com.thinkitive.eAmata.stepDefinitions",
-        tags = "@HCPGetUserList"
-//        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
-//                "html:target/cucumber-reports.html",
-//                "junit:target/cucumber-reports/Cucumber.xml"}
+        tags = "@HCPGetUserList",
+        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",   // updating the allure report and generated successfully using github action
+                "html:target/cucumber-reports.html",
+                "junit:target/cucumber-reports/Cucumber.xml"}
 )
 
 public class TestRunner {
