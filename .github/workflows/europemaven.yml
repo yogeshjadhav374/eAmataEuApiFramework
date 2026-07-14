@@ -71,12 +71,14 @@ jobs:
             echo "<html><body><h2>No Allure results were produced by this build.</h2><p>Check the Build Project step logs.</p></body></html>" > allure-report/index.html
           fi
 
-      # Zip the Allure report folder so it can be emailed as a single attachment
+      # Zip the Allure report folder (password-encrypted) so Gmail does not block it.
+      # Gmail scans inside plain zips and blocks HTML/JS content (552-5.7.0); it cannot
+      # scan an encrypted archive, so an encrypted zip is delivered normally.
       - name: Zip Allure Report
         if: always()
         run: |
           if [ -d "allure-report" ]; then
-            zip -r allure-report.zip allure-report
+            zip -r -P "eAmata@2026" allure-report.zip allure-report
           else
             echo "allure-report folder not found" && exit 1
           fi
@@ -105,6 +107,9 @@ jobs:
             Build #    : ${{ github.run_number }}
             Status     : ${{ job.status }}
             Run URL    : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            The attached allure-report.zip is password-protected (Gmail blocks plain zipped HTML reports).
+            Attachment password: eAmata@2026
 
             -- eAmata CI
           attachments: allure-report.zip
