@@ -57,6 +57,44 @@ jobs:
           allure_results: allure-results
           allure_report: allure-report
 
+      # Zip the Allure report folder so it can be emailed as a single attachment
+      - name: Zip Allure Report
+        if: always()
+        run: |
+          if [ -d "allure-report" ]; then
+            zip -r allure-report.zip allure-report
+          else
+            echo "allure-report folder not found" && exit 1
+          fi
+
+      # Email the zipped Allure report
+      - name: Email Allure Report
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "Allure Report - ${{ github.repository }} - Build #${{ github.run_number }} (${{ job.status }})"
+          to: yogesh.jadhav@thinkitive.com
+          from: eAmata CI <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            Hi Yogesh,
+
+            The Allure test report for the latest build is attached.
+
+            Repository : ${{ github.repository }}
+            Branch     : ${{ github.ref_name }}
+            Commit     : ${{ github.sha }}
+            Build #    : ${{ github.run_number }}
+            Status     : ${{ job.status }}
+            Run URL    : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            -- eAmata CI
+          attachments: allure-report.zip
+
       # Upload GitHub Pages Artifact
       - name: Upload GitHub Pages Artifact
         if: always()
