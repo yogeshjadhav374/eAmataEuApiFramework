@@ -71,17 +71,26 @@ jobs:
             echo "<html><body><h2>No Allure results were produced by this build.</h2><p>Check the Build Project step logs.</p></body></html>" > allure-report/index.html
           fi
 
-      # Zip the Allure report folder (password-encrypted) so Gmail does not block it.
-      # Gmail scans inside plain zips and blocks HTML/JS content (552-5.7.0); it cannot
-      # scan an encrypted archive, so an encrypted zip is delivered normally.
-      - name: Zip Allure Report
+      # Archive the report with AES-256 + encrypted headers so Gmail cannot scan it.
+      # Gmail blocks messages containing .js files even inside archives (552-5.7.0), and
+      # can crack weak ZipCrypto (zip -P). AES-256 via 7z (-mhe=on hides filenames too)
+      # is unreadable to Gmail, so it delivers the attachment normally.
+      - name: Archive Allure Report (AES-256 encrypted)
         if: always()
         run: |
           if [ -d "allure-report" ]; then
-            zip -r -P "eAmata@2026" allure-report.zip allure-report
+            7z a -p"eAmata@2026" -mhe=on allure-report.7z allure-report
           else
             echo "allure-report folder not found" && exit 1
           fi
+
+      # Also publish the encrypted report as a downloadable run artifact (guaranteed fallback)
+      - name: Upload Allure Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-encrypted
+          path: allure-report.7z
 
       # Email the zipped Allure report
       - name: Email Allure Report
@@ -108,11 +117,15 @@ jobs:
             Status     : ${{ job.status }}
             Run URL    : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            The attached allure-report.zip is password-protected (Gmail blocks plain zipped HTML reports).
+            The attached allure-report.7z is AES-256 encrypted (Gmail blocks plain HTML/JS reports).
+            Open it with 7-Zip / WinRAR using the password below.
             Attachment password: eAmata@2026
 
+            If the attachment is missing, download "allure-report-encrypted" from the run page:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
             -- eAmata CI
-          attachments: allure-report.zip
+          attachments: allure-report.7z
 
       # Upload GitHub Pages Artifact
       - name: Upload GitHub Pages Artifact
